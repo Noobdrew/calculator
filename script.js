@@ -31,44 +31,59 @@ let result = 0
 let num1 = 0
 let num2 = 0
 let operator = ''
-
+let changeer = 0
 buttonsArray.forEach((item) => item.addEventListener("click", storeValue));
 
 function storeValue(e) {
     let input = parseInt(document.querySelector('.input').textContent += e.target.textContent)
-    output.textContent=''
-    
+    output.textContent = ''
+
     console.log(input)
-    
-    
+    document.querySelector('.input').textContent
+
     if (e.target.classList.contains('operator')) {
         inputArray.push(input)
         inputArray.push(e.target.textContent)
         console.log(e.target.textContent)
         console.log(inputArray)
-     
-        document.querySelector('.preOutput').textContent=''
-        for(let i =0 ; i<inputArray.length;i++){
+
+        document.querySelector('.preOutput').textContent = ''
+        for (let i = 0; i < inputArray.length; i++) {
             document.querySelector('.preOutput').textContent += inputArray[i]
         }
-        document.querySelector('.input').textContent=''
+        document.querySelector('.input').textContent = ''
     }
 
     if (e.target.classList.contains('equals')) {
-
+        result = 0
+        num1 = 0
+        num2 = 0
+        operator = ''
+        changeer = 0
         for (let i = 0; i < inputArray.length; i++) {
             if (typeof (inputArray[i]) == 'number') {
                 num1 = inputArray[i]
-            }
-            if (typeof (inputArray[i]) != 'number') {
-                operator = inputArray[i]
-                num2 = inputArray[i + 1]
-                i = inputArray.length
-            }
-            console.log(`num1 ${num1} , num2 ${num2}, operator ${operator}`)
-        }
+                operator = inputArray[i + 1]
 
-        output.textContent = oparate(num1, operator, num2)
+            }
+            if (typeof (inputArray[i]) != 'number' && inputArray[i] != '=') {
+                if (changeer != 0) {
+                    operator = inputArray[i]
+                    num2 = inputArray[i + 1]
+                    result = oparate(changeer, operator, num2)
+                    changeer = result
+                    output.textContent
+                } else {
+                    operator = inputArray[i]
+                    num2 = inputArray[i + 1]
+                    changeer = oparate(num1, operator, num2)
+                    result = changeer
+                }
+            }
+        }
+        
+        output.textContent = result
+
         inputArray = []
     }
 
