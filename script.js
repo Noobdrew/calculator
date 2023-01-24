@@ -1,6 +1,5 @@
 
-const $numbers = document.querySelectorAll('.number')
-const $operators = document.querySelectorAll('.operator')
+const output = document.querySelector('.output')
 const buttons = document.getElementsByTagName("button");
 const buttonsArray = [...buttons];
 
@@ -8,57 +7,87 @@ const buttonsArray = [...buttons];
 //math functions
 function add(num1, num2) {
     console.log(num1 + num2)
-    return num1 + num2
+    return (num1 + num2)
 }
 
 function subtract(num1, num2) {
     console.log(num1 - num2)
-    return num1 - num2
+    return (num1 - num2)
 }
 
 function multiply(num1, num2) {
     console.log(num1 * num2)
-    return num1 * num2
+    return (num1 * num2).toFixed(0)
 }
 
 function divide(num1, num2) {
     console.log(num1 / num2)
-    return num1 / num2
+    return (num1 / num2).toFixed(10)
 }
 
 //make array take inputs [1,2,3,4]
 let inputArray = []
-
+let result = 0
+let num1 = 0
+let num2 = 0
+let operator = ''
 
 buttonsArray.forEach((item) => item.addEventListener("click", storeValue));
 
 function storeValue(e) {
-   let input = parseInt(document.querySelector('.input').textContent += e.target.textContent)
+    let input = parseInt(document.querySelector('.input').textContent += e.target.textContent)
+    output.textContent=''
+    
     console.log(input)
+    
+    
     if (e.target.classList.contains('operator')) {
+        inputArray.push(input)
+        inputArray.push(e.target.textContent)
         console.log(e.target.textContent)
-        document.querySelector('.input').textContent = ''
-        inputArray.push(input) 
+        console.log(inputArray)
+     
+        document.querySelector('.preOutput').textContent=''
+        for(let i =0 ; i<inputArray.length;i++){
+            document.querySelector('.preOutput').textContent += inputArray[i]
+        }
+        document.querySelector('.input').textContent=''
     }
-    console.log(inputArray)
-   
+
+    if (e.target.classList.contains('equals')) {
+
+        for (let i = 0; i < inputArray.length; i++) {
+            if (typeof (inputArray[i]) == 'number') {
+                num1 = inputArray[i]
+            }
+            if (typeof (inputArray[i]) != 'number') {
+                operator = inputArray[i]
+                num2 = inputArray[i + 1]
+                i = inputArray.length
+            }
+            console.log(`num1 ${num1} , num2 ${num2}, operator ${operator}`)
+        }
+
+        output.textContent = oparate(num1, operator, num2)
+        inputArray = []
+    }
+
+
 }
 
 
-
-
-function oparate(num1, num2, operator) {
+function oparate(num1, operator, num2) {
     if (operator == '+') {
-        add(num1, num2)
+        return add(num1, num2)
     }
     if (operator == '-') {
-        subtract(num1, num2)
+        return subtract(num1, num2)
     }
-    if (operator == '*') {
-        multiply(num1, num2)
+    if (operator == 'x') {
+        return multiply(num1, num2)
     }
     if (operator == '/') {
-        divide(num1, num2)
+        return divide(num1, num2)
     }
 }
 
